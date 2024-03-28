@@ -1,29 +1,39 @@
 import { StyleSheet, View, Text, FlatList, Pressable } from "react-native";
-import cart from "../data/cart";
 import CartListItem from "../components/CartListItem";
+import { useSelector } from "react-redux";
+import {
+  selectSubTotal,
+  selectDeliveryPrice,
+  selectTotalPrice,
+} from "../store/cartSlice";
+
 const shoppingCartTotals = () => {
+  const subTotal = useSelector(selectSubTotal);
+  const deliveryFee = useSelector(selectDeliveryPrice);
+  const totalPrice = useSelector(selectTotalPrice);
   return (
     <View style={styles.totalsContainer}>
       <View style={styles.row}>
         <Text style={styles.text}>Subtotal</Text>
-        <Text style={styles.text}>410,00 US$</Text>
+        <Text style={styles.text}>{subTotal} US$</Text>
       </View>
       <View style={styles.row}>
         <Text style={styles.text}>Delivery</Text>
-        <Text style={styles.text}>10,00 US$</Text>
+        <Text style={styles.text}>{deliveryFee} US$</Text>
       </View>
       <View style={styles.row}>
         <Text style={styles.text}>Total</Text>
-        <Text style={styles.textBold}>420,00 US$</Text>
+        <Text style={styles.textBold}>{totalPrice} US$</Text>
       </View>
     </View>
-  )
-}
+  );
+};
 const ShoppingCart = () => {
+  const cartItems = useSelector((state) => state.cart.items);
   return (
     <>
       <FlatList
-        data={cart}
+        data={cartItems}
         renderItem={({ item }) => <CartListItem cartItem={item} />}
         ListFooterComponent={shoppingCartTotals}
       />
@@ -55,18 +65,18 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
   button: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 30,
-    backgroundColor: 'black',
-    width: '90%',
-    alignSelf: 'center',
+    backgroundColor: "black",
+    width: "90%",
+    alignSelf: "center",
     padding: 20,
     borderRadius: 100,
-    alignItems: 'center',
+    alignItems: "center",
   },
   buttonText: {
-    color: 'white',
-    fontWeight: '500',
+    color: "white",
+    fontWeight: "500",
     fontSize: 16,
   },
 });
